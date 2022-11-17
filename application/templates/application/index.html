@@ -1,15 +1,21 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>My Blog</title>
-    </head>
-    <body>
+  <head>
+    <style>
+     body {
+      color: black;
+      text-align: center;
+      } 
+ 
+    </style>
+  </head>
+  <body>
+    <h1>Hello</h1>
 
-        <h1>
-            List of all blog posts
-        </h1>
+    <p> Welcome to the Our site</p>
+    <div>
+      <a href="{% url 'application:signup' %}">Sign Up</a>
 
-        
-    </body>
+      <a href="{% url 'application:login' %}">Login</a>
+    </div>
+  </body>
 </html>
