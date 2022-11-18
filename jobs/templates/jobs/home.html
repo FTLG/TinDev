@@ -1,0 +1,9 @@
+{% block content %}
+  <h2>Welcome!</h2>
+  <p class="lead">
+    <a href="{% url 'login' %}">Log In</a>. 
+    <br><br>
+    If you are new to TinDev, get started
+    by creating a <a href="{% url 'candidate_signup' %}">candidate account</a> or a <a href="{% url 'recruiter_signup' %}">recruiter account</a>.
+  </p>
+{% endblock %}
