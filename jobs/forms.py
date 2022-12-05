@@ -2,7 +2,11 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
+from django.contrib.admin.widgets import AdminDateWidget
+from django.forms.fields import DateField
+from django.forms import DateInput
 from jobs.models import (User, UserPost)
+
 
 
 class RecruiterSignUpForm(UserCreationForm):
@@ -55,6 +59,9 @@ class CandidateSignUpForm(UserCreationForm):
         return user
 
 class UserPostForm(forms.ModelForm):
+
+    expire_date = DateField(widget=DateInput(attrs={'type': 'date'}))
+
     class Meta:
         model = UserPost
-        fields= ["title", "content"]
+        fields= ["title", "job_type", "city", "state", "preferred_skills", "description", "company", "expire_date", "status"]
