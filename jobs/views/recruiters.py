@@ -59,3 +59,21 @@ def post_detail_view(request, url=None):
     context= {'post': post}
     
     return render(request, 'jobs/recruiters/post_detail_view.html', context)
+
+def edit_post(request, url):
+    post = UserPost.objects.get(url=url)
+    form = UserPostForm(request.POST or None, instance=post)
+
+    user = request.user
+
+    if request.method == "POST":
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = user
+            post.title = request.POST.get('title')
+            post.save()
+        return redirect("recruiters:view_all_posts")
+    
+    context= {'form': form}
+
+    return render(request, 'jobs/recruiters/create_post.html', context)

@@ -11,11 +11,22 @@
     
     <body>
 
-        <h1>{{ post.title }}</h1>
+        <h1>Listing for {{ post.title }} at {{ post.company }}</h1>
 
-        <p>Content: {{ post.content }}</p>
+        <ul>
 
-        Go back to the <a href="/recruiters/posts/">Blog posts </a><br><br>
+            <li>Job Type: {{ post.job_type }} </li>   
+            <li>Location: {{ post.city }}, {{ post.state}} </li>   
+            <li>Preferred Skills: {{ post.preferred_skills }} </li>   
+            <li>Description: {{ post.description }} </li>   
+            <li>Date Published: {{ post.date_published }} </li>   
+            <li>Expire Date: {{ post.expire_date }} </li>   
+            <li>Status: {{ post.status }} </li>   
+
+        </ul>
+
+        Click to edit post: <a href="/recruiters/posts/{{ post.url }}/edit">Here </a>
+        or <br> Go back to the <a href="/recruiters/posts/">Blog posts </a><br><br>
 
     </body>
 </html>

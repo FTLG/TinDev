@@ -8,8 +8,8 @@ from django.contrib.admin.widgets import AdminDateWidget
 import datetime
 
 
-POSITION_TYPE = [('full_time', 'Full Time'), ('part_time', 'Part Time'), ('internship', 'Internship')]
-STATUS = [('active', 'Active'), ('inactive', 'Inactive')]
+POSITION_TYPE = [('Full-Time', 'Full-Time'), ('Part-Time', 'Part-Time'), ('Internship', 'Internship')]
+STATUS = [('Active', 'Active'), ('Inactive', 'Inactive')]
 class User(AbstractUser):
     is_candidate = models.BooleanField(default=False)
     is_recruiter = models.BooleanField(default=False)
