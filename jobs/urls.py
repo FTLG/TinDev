@@ -15,6 +15,7 @@ urlpatterns = [
         path('posts/', recruiters.view_all_posts, name='view_all_posts'),
         path('posts/<slug:url>/', recruiters.post_detail_view, name='post_detail_view'),
         path('posts/<slug:url>/edit', recruiters.edit_post, name='edit_post'),
+        path('posts/<slug:url>/delete', recruiters.delete_post, name='delete_post'),
     ], 'jobs'), namespace='recruiters')),
     
 ]

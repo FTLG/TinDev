@@ -6,6 +6,8 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.admin.widgets import AdminDateWidget
 import datetime
+import uuid
+
 
 
 POSITION_TYPE = [('Full-Time', 'Full-Time'), ('Part-Time', 'Part-Time'), ('Internship', 'Internship')]
@@ -31,11 +33,12 @@ class UserPost(models.Model):
     preferred_skills = models.CharField(max_length = 500, default="Ex: Python, Java")
     description = models.CharField(max_length = 500, default="Enter Description Here")
     company = models.CharField(max_length = 50, default="Company Name")
-    date_published= models.DateTimeField(default=timezone.now())
+    date_published = models.DateTimeField(default=timezone.now())
     expire_date = models.DateTimeField(default=timezone.now())
     status = models.CharField(max_length = 50, choices=STATUS, default="Active")
-    url= models.SlugField(max_length=500, unique=True, blank=True, editable=False)
+    url = models.SlugField(max_length=500, unique=True, blank=True, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def save(self, *args, **kwargs):
-        self.url= slugify(self.title)
+        self.url= slugify(self.id)
         super(UserPost, self).save(*args, **kwargs)    

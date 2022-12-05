@@ -48,7 +48,7 @@ def create_post(request):
 
 def view_all_posts(request):
 
-    allposts= UserPost.objects.filter(user=request.user)
+    allposts= UserPost.objects.filter(user=request.user).order_by('-date_published')
     context= {'allposts': allposts}
     
     return render(request, 'jobs/recruiters/view_all_posts.html', context)
@@ -77,3 +77,10 @@ def edit_post(request, url):
     context= {'form': form}
 
     return render(request, 'jobs/recruiters/create_post.html', context)
+
+def delete_post(request, url):
+
+    UserPost.objects.filter(url=url).delete()
+
+    return redirect('recruiters:view_all_posts')
+
