@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
-from jobs.models import (User)
+from jobs.models import (User, UserPost)
 
 
 class RecruiterSignUpForm(UserCreationForm):
@@ -53,3 +53,8 @@ class CandidateSignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class UserPostForm(forms.ModelForm):
+    class Meta:
+        model = UserPost
+        fields= ["title", "content"]

@@ -1,6 +1,20 @@
 {% block content %}
     <body>
-        <a href="{% url 'logout' %}">Logout</a>
-        HELLO {{user.company}}
+        Hello {{user.name}}!
+
+        <br><br>
+
+        To create a post, click
+        <a href="{% url 'recruiters:create_post' %}">HERE</a>
+
+        <br><br>
+
+        To view all posts, click 
+        <a href="{% url 'recruiters:view_all_posts' %}">HERE</a>
+
     </body>
+
+    <br><br>
+    <a href="{% url 'logout' %}">Logout</a>
+
 {% endblock %}
