@@ -53,7 +53,6 @@ class CandidateSignUpForm(UserCreationForm):
         user.experience = self.cleaned_data["experience"]
         user.education = self.cleaned_data["education"]
         
-        
         if commit:
             user.save()
         return user
@@ -65,3 +64,9 @@ class UserPostForm(forms.ModelForm):
     class Meta:
         model = UserPost
         fields= ["title", "job_type", "city", "state", "preferred_skills", "description", "company", "expire_date", "status"]
+
+
+class FavoritePost(forms.ModelForm):
+    class Meta:
+        model = UserPost
+        fields = ['favorites']

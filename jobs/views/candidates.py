@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView
-from ..forms import CandidateSignUpForm
+from ..forms import CandidateSignUpForm, FavoritePost
 from ..decorators import candidate_required
 from ..models import User, UserPost
 
@@ -39,7 +39,36 @@ def view_all_posts_candidates(request):
 
 def post_detail_view_candidates(request, url=None):
 
-    post= get_object_or_404(UserPost, url=url)
-    context= {'post': post}
+    post = get_object_or_404(UserPost, url=url)
+    context= {'post': post, 'user':request.user }
     
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
+
+def favorite_post(request, url):
+
+    post = UserPost.objects.get(url=url)
+    print(post.favorites.all())
+    post.save()
+
+    post.favorites.add(request.user)
+    post.save()
+    # print(post.favorites.all())
+    # print(request.user in post.favorites.all())
+
+    context= {'post': post}
+
+    return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
+
+def remove_favorite(request, url):
+
+    post = UserPost.objects.get(url=url)
+    print(post.favorites.all())
+    post.save()
+
+    post.favorites.remove(request.user)
+    post.save()
+
+    context= {'post': post}
+
+    return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
+

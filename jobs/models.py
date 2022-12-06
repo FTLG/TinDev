@@ -8,10 +8,9 @@ from django.contrib.admin.widgets import AdminDateWidget
 import datetime
 import uuid
 
-
-
 POSITION_TYPE = [('Full-Time', 'Full-Time'), ('Part-Time', 'Part-Time'), ('Internship', 'Internship')]
 STATUS = [('Active', 'Active'), ('Inactive', 'Inactive')]
+
 class User(AbstractUser):
     is_candidate = models.BooleanField(default=False)
     is_recruiter = models.BooleanField(default=False)
@@ -25,7 +24,7 @@ class User(AbstractUser):
     skills = models.CharField(max_length=30, default="STRING")
 
 class UserPost(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_job')
     title = models.CharField(max_length=500)
     job_type = models.CharField(max_length=20, choices=POSITION_TYPE, default="Ex: Part Time")
     state = models.CharField(max_length = 50, default="Ex: Ohio")
@@ -38,6 +37,8 @@ class UserPost(models.Model):
     status = models.CharField(max_length = 50, choices=STATUS, default="Active")
     url = models.SlugField(max_length=500, unique=True, blank=True, editable=False)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    favorites = models.ManyToManyField(User, related_name='favorite_job')
+
 
     def save(self, *args, **kwargs):
         self.url= slugify(self.id)
