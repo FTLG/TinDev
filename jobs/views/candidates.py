@@ -47,13 +47,10 @@ def post_detail_view_candidates(request, url=None):
 def favorite_post(request, url):
 
     post = UserPost.objects.get(url=url)
-    print(post.favorites.all())
     post.save()
 
     post.favorites.add(request.user)
     post.save()
-    # print(post.favorites.all())
-    # print(request.user in post.favorites.all())
 
     context= {'post': post}
 
@@ -62,7 +59,6 @@ def favorite_post(request, url):
 def remove_favorite(request, url):
 
     post = UserPost.objects.get(url=url)
-    print(post.favorites.all())
     post.save()
 
     post.favorites.remove(request.user)

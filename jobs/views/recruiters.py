@@ -84,3 +84,11 @@ def delete_post(request, url):
 
     return redirect('recruiters:view_all_posts')
 
+def view_interested(request, url):
+
+    post = UserPost.objects.get(url=url)
+    users = post.favorites.all()
+
+    context = {'post': post, 'users': users}
+
+    return render(request, 'jobs/recruiters/view_interested.html', context)
