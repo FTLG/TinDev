@@ -13,17 +13,17 @@
 
         <h1>Listing for {{ post.title }} at {{ post.company }}</h1>
 
-        <ul>
+        <ul class="list-group">
 
-            <li>Job Type: {{ post.job_type }} </li>   
-            <li>Location: {{ post.city }}, {{ post.state}} </li>   
-            <li>Preferred Skills: {{ post.preferred_skills }} </li>   
-            <li>Description: {{ post.description }} </li>   
-            <li>Date Published: {{ post.date_published }} </li>   
-            <li>Expire Date: {{ post.expire_date }} </li>   
-            <li>Status: {{ post.status }} </li>   
+            <li class="list-group-item">Job Type: {{ post.job_type }} </li>   
+            <li class="list-group-item">Location: {{ post.city }}, {{ post.state}} </li>   
+            <li class="list-group-item">Preferred Skills: {{ post.preferred_skills }} </li>   
+            <li class="list-group-item">Description: {{ post.description }} </li>   
+            <li class="list-group-item">Date Published: {{ post.date_published }} </li>   
+            <li class="list-group-item">Expire Date: {{ post.expire_date }} </li>   
+            <li class="list-group-item">Status: {{ post.status }} </li>   
 
-        </ul>
+        </ul><br>
 
         <div class="btn-group">
             &nbsp;

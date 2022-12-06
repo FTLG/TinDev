@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView
 from ..forms import CandidateSignUpForm
 from ..decorators import candidate_required
-from ..models import User
+from ..models import User, UserPost
 
 
 class CandidateSignUpView(CreateView):
@@ -28,3 +28,18 @@ class CandidateSignUpView(CreateView):
 
 def candidate_home(request):
     return render(request, "jobs/candidates/candidate_home.html")
+
+
+def view_all_posts_candidates(request):
+
+    allposts= UserPost.objects.all().order_by('-date_published')
+    context= {'allposts': allposts}
+    
+    return render(request, 'jobs/candidates/view_all_posts_candidates.html', context)
+
+def post_detail_view_candidates(request, url=None):
+
+    post= get_object_or_404(UserPost, url=url)
+    context= {'post': post}
+    
+    return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)

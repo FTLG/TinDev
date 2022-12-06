@@ -1,4 +1,7 @@
 from django.urls import include, path
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 from .views import jobs, candidates, recruiters
 
@@ -7,6 +10,9 @@ urlpatterns = [
 
     path('candidates/', include(([
         path('', candidates.candidate_home, name='candidate_home'),
+        path('posts/', candidates.view_all_posts_candidates, name='view_all_posts_candidates'),
+        path('posts/<slug:url>/', candidates.post_detail_view_candidates, name='post_detail_view_candidates'),
+
     ], 'jobs'), namespace='candidates')),
 
     path('recruiters/', include(([
@@ -18,4 +24,4 @@ urlpatterns = [
         path('posts/<slug:url>/delete', recruiters.delete_post, name='delete_post'),
     ], 'jobs'), namespace='recruiters')),
     
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
