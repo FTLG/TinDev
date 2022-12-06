@@ -49,19 +49,19 @@ class UserPost(models.Model):
         list_interested = []
         for user in self.favorites.all():
             
-            s0 = self.description.lower().translate(str.maketrans('', '', string.punctuation))
-            s1 = user.bio.lower().translate(str.maketrans('', '', string.punctuation))
-            s0List = s0.split(" ")
-            s1List = s1.split(" ")
-            num_common_bios = len(list(set(s0List)&set(s1List)))
+            description_simple = self.description.lower().translate(str.maketrans('', '', string.punctuation))
+            bio_simple = user.bio.lower().translate(str.maketrans('', '', string.punctuation))
+            description_list = description_simple.split(" ")
+            bio_list = bio_simple.split(" ")
+            num_common_bios = len(list(set(description_list)&set(bio_list)))
 
-            s0 = self.preferred_skills.lower().translate(str.maketrans('', '', string.punctuation))
-            s1 = user.skills.lower().translate(str.maketrans('', '', string.punctuation))
-            s0List = s0.split(" ")
-            s1List = s1.split(" ")
-            num_common_skills = len(list(set(s0List)&set(s1List)))
+            pref_skills_simple = self.preferred_skills.lower().translate(str.maketrans('', '', string.punctuation))
+            user_skills_simple = user.skills.lower().translate(str.maketrans('', '', string.punctuation))
+            pref_skills_list = pref_skills_simple.split(" ")
+            user_skills_list = user_skills_simple.split(" ")
+            num_common_skills = len(list(set(pref_skills_list)&set(user_skills_list)))
 
-            user.compat = min(num_common_bios * 13, 40) + min(num_common_skills * 16, 60)
+            user.compat = int(40 * num_common_bios / len(description_list) + 60 * num_common_skills / len(pref_skills_list))
 
             list_interested.append(user)
         
