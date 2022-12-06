@@ -87,8 +87,8 @@ def delete_post(request, url):
 def view_interested(request, url):
 
     post = UserPost.objects.get(url=url)
-    users = post.favorites.all()
-
+    #users = post.favorites.all() #
+    users = post.favorites_ranked()
     context = {'post': post, 'users': users}
 
     return render(request, 'jobs/recruiters/view_interested.html', context)

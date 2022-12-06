@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from django.contrib.admin.widgets import AdminDateWidget
 import datetime
 import uuid
+import string
 
 POSITION_TYPE = [('Full-Time', 'Full-Time'), ('Part-Time', 'Part-Time'), ('Internship', 'Internship')]
 STATUS = [('Active', 'Active'), ('Inactive', 'Inactive')]
@@ -42,4 +43,27 @@ class UserPost(models.Model):
 
     def save(self, *args, **kwargs):
         self.url= slugify(self.id)
-        super(UserPost, self).save(*args, **kwargs)    
+        super(UserPost, self).save(*args, **kwargs)
+
+    def favorites_ranked(self):
+        list_interested = []
+        for user in self.favorites.all():
+            
+            s0 = self.description.lower().translate(str.maketrans('', '', string.punctuation))
+            s1 = user.bio.lower().translate(str.maketrans('', '', string.punctuation))
+            s0List = s0.split(" ")
+            s1List = s1.split(" ")
+            num_common_bios = len(list(set(s0List)&set(s1List)))
+
+            s0 = self.preferred_skills.lower().translate(str.maketrans('', '', string.punctuation))
+            s1 = user.skills.lower().translate(str.maketrans('', '', string.punctuation))
+            s0List = s0.split(" ")
+            s1List = s1.split(" ")
+            num_common_skills = len(list(set(s0List)&set(s1List)))
+
+            user.compat = min(num_common_bios * 13, 40) + min(num_common_skills * 16, 60)
+
+            list_interested.append(user)
+        
+        cands_sorted = sorted(list_interested, key=lambda x: x.compat, reverse=True)
+        return cands_sorted
