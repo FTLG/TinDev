@@ -15,10 +15,11 @@
         {% for offer in offers %}
 
             <div class="list-group">
-                <a href='{% url "candidates:post_detail_view_candidates" offer.post.url %}' class="list-group-item list-group-item-action">{{ offer.post.title }} - {{ offer.post.company }}
+                <a href='{% url "candidates:post_detail_view_candidates" offer.post.url %}' class="list-group-item list-group-item-action">{{ offer.post.title }} - {{ offer.post.company }} - ${{offer.salary}} / year - Decision Deadline: {{offer.deadline}}
                 </a>
 
             </div>
+            
 
         {% endfor %}
 
