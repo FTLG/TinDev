@@ -86,9 +86,11 @@ def delete_post(request, url):
     return redirect('recruiters:view_all_posts')
 
 def view_interested(request, url):
+
     post = UserPost.objects.get(url=url)
     users = post.favorites_ranked()
     choices = [(x, x.name) for x in users]
+    print(choices)
     form = InterestedCandidatesForm(request.POST or None, choices=choices)
 
     if request.method == "POST":
@@ -103,6 +105,11 @@ def view_interested(request, url):
             print(selected_candidates)
             print(offer_salary)
             print(offer_deadline)
+
+            for candidate in selected_candidates:
+
+                pass
+
         return redirect("recruiters:post_detail_view", url=url)
 
     

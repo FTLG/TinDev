@@ -78,7 +78,7 @@ class InterestedCandidatesForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
     )
     salary = forms.CharField(label='Yearly Salary', max_length=50, required=True)
-    deadline = forms.CharField(label='Decision Deadline', max_length=50, required=True)
+    deadline = forms.DateField(widget=DateInput(attrs={'type': 'date'}), required=True)
 
 
     def __init__(self, *args, **kwargs):
