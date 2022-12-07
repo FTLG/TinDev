@@ -70,3 +70,24 @@ class FavoritePost(forms.ModelForm):
     class Meta:
         model = UserPost
         fields = ['favorites']
+
+class InterestedCandidatesForm(forms.Form):
+    # define field that uses the CheckboxSelectMultiple widget
+    interested_candidates = forms.MultipleChoiceField(
+        label='Interested Candidates (and their compatability score)',
+        widget=forms.CheckboxSelectMultiple,
+    )
+    salary = forms.CharField(label='Yearly Salary', max_length=50, required=True)
+    deadline = forms.CharField(label='Decision Deadline', max_length=50, required=True)
+
+
+    def __init__(self, *args, **kwargs):
+        # Get the list of choices from the keyword arguments
+        choices = kwargs.pop('choices', None)
+
+        # Initialize the form
+        super().__init__(*args, **kwargs)
+
+        # Set the choices property of the my_field field to the list of choices
+        self.fields['interested_candidates'].choices = choices
+

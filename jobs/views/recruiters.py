@@ -9,8 +9,9 @@ from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView, UpdateView)
 from ..decorators import recruiter_required
-from ..forms import RecruiterSignUpForm, UserPostForm
+from ..forms import RecruiterSignUpForm, UserPostForm, InterestedCandidatesForm
 from ..models import User, UserPost
+import logging
 
 
 class RecruiterSignUpView(CreateView):
@@ -56,7 +57,7 @@ def view_all_posts(request):
 def post_detail_view(request, url=None):
 
     post= get_object_or_404(UserPost, url=url)
-    context= {'post': post}
+    context= {'post': post, 'offered':[]}
     
     return render(request, 'jobs/recruiters/post_detail_view.html', context)
 
@@ -85,10 +86,26 @@ def delete_post(request, url):
     return redirect('recruiters:view_all_posts')
 
 def view_interested(request, url):
-
     post = UserPost.objects.get(url=url)
-    #users = post.favorites.all() #
     users = post.favorites_ranked()
-    context = {'post': post, 'users': users}
+    choices = [(x, x.name) for x in users]
+    form = InterestedCandidatesForm(request.POST or None, choices=choices)
+
+    if request.method == "POST":
+        if form.is_valid():
+            #post = form.save(commit=False)
+            #post.user = user
+            #post.title = request.POST.get('title')
+            #post.save()
+            offer_salary = request.POST.get('salary')
+            offer_deadline = request.POST.get('deadline')
+            selected_candidates = request.POST.getlist('interested_candidates')
+            print(selected_candidates)
+            print(offer_salary)
+            print(offer_deadline)
+        return redirect("recruiters:post_detail_view", url=url)
+
+    
+    context = {'post': post, 'users': users, 'form': form}
 
     return render(request, 'jobs/recruiters/view_interested.html', context)

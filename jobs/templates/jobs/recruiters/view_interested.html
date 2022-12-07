@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
 
+
 {% block content %}
 <html>
     <head>
@@ -10,19 +11,18 @@
     
     <body>
         <h1>List of Interested Candidates for {{ post.title }} </h1>  
+        
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% bootstrap_form form %}
+            <br>
+            <button type="submit" class="btn btn-success">Make Offer to Candidate(s)</button>
+        </form>
+        
         <br>
-
-        {% for user in users %}
-
-            <div class="list-group">
-                
-                {{ user }} {{ user.compat}}%
-
-            </div>
-
-        {% endfor %}
-
-        <br><br>
+        
+        <br>
         <div class="btn-group">
             <div>&nbsp;&nbsp;</div>
             <a href='{% url "recruiters:post_detail_view" post.url %}' class="btn btn-success active">

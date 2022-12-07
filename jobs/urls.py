@@ -25,6 +25,7 @@ urlpatterns = [
         path('posts/<slug:url>/edit', recruiters.edit_post, name='edit_post'),
         path('posts/<slug:url>/delete', recruiters.delete_post, name='delete_post'),
         path('posts/<slug:url>/interested', recruiters.view_interested, name='view_interested'),
+
     ], 'jobs'), namespace='recruiters')),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
