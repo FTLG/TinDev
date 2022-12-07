@@ -10,6 +10,7 @@ from django.views.generic import CreateView, ListView, UpdateView
 from ..forms import CandidateSignUpForm, FavoritePost
 from ..decorators import candidate_required
 from ..models import User, UserPost, Offer
+import datetime
 
 
 class CandidateSignUpView(CreateView):
@@ -70,8 +71,10 @@ def remove_favorite(request, url):
 
 def view_offers(request):
 
-    offers = Offer.objects.all()
-    context= {'offers': offers}
+    offers = Offer.objects.filter(user=request.user)
+    date = datetime.datetime.now().date() 
+
+    context= {'offers': offers, 'date':date}
     
     return render(request, 'jobs/candidates/view_all_offers.html', context)
 
@@ -80,11 +83,54 @@ def view_offers(request):
 
 def offer_detail_view(request, url=None):
 
-    post = get_object_or_404(UserPost, url=url)
-    offer = Offer.objects.filter(user=request.user).filter(post=post)[0]
+    offer = Offer.objects.get(url=url)
+    post = offer.post
 
-    print(offer)
+    # date = datetime.datetime.now().date() 
+    # print(date, offer.deadline)
 
     context= {'post': post, 'user':request.user, 'offer':offer}
+
+    return render(request, 'jobs/candidates/offer_detail_view.html', context)
+
+def accept_offer(request, url=None):
+
+    offer = Offer.objects.get(url=url)
+    user = User.objects.get(id=request.user.id)
+    post = offer.post
+
+    offer.save()
+    user.save()
+
+    offer.rejected = False
+    offer.accepted = True
+    user.accepted = True
+
+    offer.save()
+    user.save()
+
+    context= {'post': post, 'user':user, 'offer':offer}
+
+    return render(request, 'jobs/candidates/offer_detail_view.html', context)
+
+
+def reject_offer(request, url=None):
+
+    offer = Offer.objects.get(url=url)
+    user = User.objects.get(id=request.user.id)
+    post = offer.post
+
+    offer.save()
+    user.save()
+
+    offer.rejected = True
+    offer.accepted = False
+    user.accepted = False
+
+    offer.save()
+    user.save()
+
+    context= {'post': post, 'user':user, 'offer':offer}
+
 
     return render(request, 'jobs/candidates/offer_detail_view.html', context)

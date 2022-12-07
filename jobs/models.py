@@ -23,6 +23,9 @@ class User(AbstractUser):
     education = models.CharField(max_length=30, default="STRING")
     company = models.CharField(max_length=30, default="STRING")
     skills = models.CharField(max_length=30, default="STRING")
+    accepted = models.BooleanField(default=False)
+
+    
 
 class UserPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_job')
@@ -78,6 +81,8 @@ class Offer(models.Model):
     salary = models.CharField(max_length=25)
     deadline = models.DateField(default=timezone.now())
     url = models.SlugField(max_length=500, unique=True, blank=True, editable=False)
+    accepted = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def save(self, *args, **kwargs):

@@ -13,11 +13,14 @@
 
         <h1>Create Post</h1>
 
-        <form class="form-group" enctype="multipart/form-data" method="POST" action="">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            <input type="submit" value="Post"/>
-        </form>
+        <div ALIGN="left">
+            <form class="form-group" enctype="multipart/form-data" method="POST" action="">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input type="submit" value="Post"/>
+            </form>
+        </div>
+        
 
     </body>
 </html>

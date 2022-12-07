@@ -2,9 +2,9 @@
 {% load bootstrap5 %}
 
 {% block content %}
-  <div class="row">
+  <div class="row" ALIGN="left">
     <div class="col">
-      <h2>Sign up as a {{ user_type }}</h2>
+      <h2 ALIGN="center">Sign up as a {{ user_type }}</h2>
       <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">

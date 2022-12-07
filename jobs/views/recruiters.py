@@ -91,6 +91,14 @@ def view_interested(request, url):
     users = post.favorites_ranked()
     choices = [(x, (x.name + "  - Compatability Score: " + str(x.compat) +"%")) for x in users]
 
+    current_offers = Offer.objects.all()
+
+    for curr in current_offers:
+        for curr_user, string in choices:
+            if curr.post == post and curr.user == curr_user:
+                temp_user = User.objects.filter(username=curr_user)[0]
+                choices.remove((temp_user, string))
+
     form = InterestedCandidatesForm(request.POST or None, choices=choices)
 
     if request.method == "POST":
