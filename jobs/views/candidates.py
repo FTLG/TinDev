@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView
 from ..forms import CandidateSignUpForm, FavoritePost
 from ..decorators import candidate_required
-from ..models import User, UserPost
+from ..models import User, UserPost, Offer
 
 
 class CandidateSignUpView(CreateView):
@@ -68,3 +68,12 @@ def remove_favorite(request, url):
 
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
 
+def view_offers(request):
+
+    offers = Offer.objects.all()
+    context= {'offers': offers}
+    
+    return render(request, 'jobs/candidates/view_all_offers.html', context)
+
+
+    return

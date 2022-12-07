@@ -66,4 +66,14 @@ class UserPost(models.Model):
             list_interested.append(user)
         
         cands_sorted = sorted(list_interested, key=lambda x: x.compat, reverse=True)
+        
+        # print(type(cands_sorted[0]), "\n\n")
+        
         return cands_sorted
+
+class Offer(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='offer_user')
+    post = models.ForeignKey(UserPost, on_delete=models.PROTECT, related_name='offer_post')
+    salary = models.CharField(max_length=25)
+    deadline = models.DateField(default=timezone.now())

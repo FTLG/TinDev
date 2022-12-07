@@ -88,6 +88,10 @@ class InterestedCandidatesForm(forms.Form):
         # Initialize the form
         super().__init__(*args, **kwargs)
 
+        for field in self.fields:
+            self.fields[field].required = True
+
+
         # Set the choices property of the my_field field to the list of choices
         self.fields['interested_candidates'].choices = choices
 

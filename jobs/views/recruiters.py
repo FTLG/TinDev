@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView, UpdateView)
 from ..decorators import recruiter_required
 from ..forms import RecruiterSignUpForm, UserPostForm, InterestedCandidatesForm
-from ..models import User, UserPost
+from ..models import User, UserPost, Offer
 import logging
 
 
@@ -90,29 +90,27 @@ def view_interested(request, url):
     post = UserPost.objects.get(url=url)
     users = post.favorites_ranked()
     choices = [(x, x.name) for x in users]
-    print(choices)
+
     form = InterestedCandidatesForm(request.POST or None, choices=choices)
 
     if request.method == "POST":
         if form.is_valid():
-            #post = form.save(commit=False)
-            #post.user = user
-            #post.title = request.POST.get('title')
-            #post.save()
+
             offer_salary = request.POST.get('salary')
             offer_deadline = request.POST.get('deadline')
-            selected_candidates = request.POST.getlist('interested_candidates')
-            print(selected_candidates)
-            print(offer_salary)
-            print(offer_deadline)
+            selected_candidates = form.cleaned_data['interested_candidates']
 
             for candidate in selected_candidates:
 
-                pass
+                offer_user = User.objects.filter(username=candidate)[0]
+                offer = Offer.objects.create(user=offer_user, post=post, salary=offer_salary, deadline=offer_deadline)
+                offer.save()
 
-        return redirect("recruiters:post_detail_view", url=url)
+            return redirect("recruiters:post_detail_view", url=url)
 
     
-    context = {'post': post, 'users': users, 'form': form}
+    offers = Offer.objects.all()
+
+    context = {'post': post, 'users': users, 'form': form, 'offers':offers}
 
     return render(request, 'jobs/recruiters/view_interested.html', context)

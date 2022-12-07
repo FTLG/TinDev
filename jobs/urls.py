@@ -11,6 +11,7 @@ urlpatterns = [
     path('candidates/', include(([
         path('', candidates.candidate_home, name='candidate_home'),
         path('posts/', candidates.view_all_posts_candidates, name='view_all_posts_candidates'),
+        path('offers/', candidates.view_offers, name='view_offers'),
         path('posts/<slug:url>/', candidates.post_detail_view_candidates, name='post_detail_view_candidates'),
         path('posts/<slug:url>/favorite/', candidates.favorite_post, name='favorite_post'),
         path('posts/<slug:url>/remove_favorite/', candidates.remove_favorite, name='remove_favorite'),
