@@ -14,7 +14,8 @@
         
         <form ALIGN="left" method="post" novalidate>
             {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}">
+            <input type="hidden" name="next" value="{{ next }}" id="testID">
+            
             {% bootstrap_form form %}
             <br>
             <button ALGIN="center" type="submit" class="btn btn-success">Make Offer to Candidate(s)</button>

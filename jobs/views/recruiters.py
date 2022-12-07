@@ -89,7 +89,7 @@ def view_interested(request, url):
 
     post = UserPost.objects.get(url=url)
     users = post.favorites_ranked()
-    choices = [(x, x.name) for x in users]
+    choices = [(x, (x.name + "  - Compatability Score: " + str(x.compat) +"%")) for x in users]
 
     form = InterestedCandidatesForm(request.POST or None, choices=choices)
 

@@ -75,7 +75,7 @@ class InterestedCandidatesForm(forms.Form):
     # define field that uses the CheckboxSelectMultiple widget
     interested_candidates = forms.MultipleChoiceField(
         label='Interested Candidates (and their compatability score)',
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple
     )
     salary = forms.CharField(label='Yearly Salary', max_length=50, required=True)
     deadline = forms.DateField(widget=DateInput(attrs={'type': 'date'}), required=True)

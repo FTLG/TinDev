@@ -77,3 +77,14 @@ def view_offers(request):
 
 
     return
+
+def offer_detail_view(request, url=None):
+
+    post = get_object_or_404(UserPost, url=url)
+    offer = Offer.objects.filter(user=request.user).filter(post=post)[0]
+
+    print(offer)
+
+    context= {'post': post, 'user':request.user, 'offer':offer}
+
+    return render(request, 'jobs/candidates/offer_detail_view.html', context)
