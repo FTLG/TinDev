@@ -5,6 +5,7 @@ from django.utils.html import escape, mark_safe
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.admin.widgets import AdminDateWidget
+from django.forms import TextInput
 import datetime
 import uuid
 import string
@@ -30,15 +31,15 @@ class User(AbstractUser):
 class UserPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_job')
     title = models.CharField(max_length=500)
-    job_type = models.CharField(max_length=20, choices=POSITION_TYPE, default="Ex: Part Time")
-    state = models.CharField(max_length = 50, default="Ex: Ohio")
-    city = models.CharField(max_length = 50, default="Ex: Cincinnati")
-    preferred_skills = models.CharField(max_length = 500, default="Ex: Python, Java")
-    description = models.CharField(max_length = 500, default="Enter Description Here")
-    company = models.CharField(max_length = 50, default="Company Name")
+    job_type = models.CharField(max_length=20, choices=POSITION_TYPE, blank=False)
+    state = models.CharField(max_length = 50, blank=False)
+    city = models.CharField(max_length = 50, blank=False)
+    preferred_skills = models.CharField(max_length = 500, blank=False)
+    description = models.CharField(max_length = 500, blank=False)
+    company = models.CharField(max_length = 50, blank=False)
     date_published = models.DateTimeField(default=timezone.now())
     expire_date = models.DateTimeField(default=timezone.now())
-    status = models.CharField(max_length = 50, choices=STATUS, default="Active")
+    status = models.CharField(max_length = 50, choices=STATUS, blank=False)
     url = models.SlugField(max_length=500, unique=True, blank=True, editable=False)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     favorites = models.ManyToManyField(User, related_name='favorite_job')
@@ -69,8 +70,6 @@ class UserPost(models.Model):
             list_interested.append(user)
         
         cands_sorted = sorted(list_interested, key=lambda x: x.compat, reverse=True)
-        
-        # print(type(cands_sorted[0]), "\n\n")
         
         return cands_sorted
 

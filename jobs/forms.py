@@ -4,7 +4,7 @@ from django.db import transaction
 from django.forms.utils import ValidationError
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
-from django.forms import DateInput
+from django.forms import DateInput, CheckboxInput
 from jobs.models import (User, UserPost)
 
 
@@ -37,7 +37,7 @@ class CandidateSignUpForm(UserCreationForm):
     bio = forms.CharField(label='Your Bio', max_length=100, required=False)
     skills = forms.CharField(label='Your Skills', max_length=100, required=True)
     experience = forms.CharField(label='Your Experience', max_length=100, required=True)
-    education = forms.CharField(label='Your Education', max_length=100, required=True)
+    education = forms.CharField(label='Your Education', max_length=100, required=False)
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -59,7 +59,7 @@ class CandidateSignUpForm(UserCreationForm):
 
 class UserPostForm(forms.ModelForm):
 
-    expire_date = DateField(widget=DateInput(attrs={'type': 'date'}))
+    expire_date = DateField(widget=DateInput(attrs={'type': 'date'}), required=True)
 
     class Meta:
         model = UserPost
@@ -70,6 +70,40 @@ class FavoritePost(forms.ModelForm):
     class Meta:
         model = UserPost
         fields = ['favorites']
+        
+
+class FilterPost(forms.Form):
+
+    status = forms.ChoiceField(widget=forms.RadioSelect,
+        choices= [('active', 'Active'), ('inactive', 'Inactive')], required=False)
+
+    at_least_one_interested = forms.BooleanField(required=False)
+    reset_search = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+
+class FilterPostCandidate(forms.Form):
+
+    status = forms.ChoiceField(widget=forms.RadioSelect,
+        choices= [('active', 'Active'), ('inactive', 'Inactive')], required=False)
+
+
+    state = forms.CharField(label='State', max_length=15, required=False)
+    city = forms.CharField(label='City', max_length=15, required=False)
+    keywords = forms.CharField(label='Keywords', max_length=50, required=False)
+
+    reset_search = forms.BooleanField(required=False)
+
+
+    def __init__(self, *args, **kwargs):
+
+        # Initialize the form
+        super().__init__(*args, **kwargs)
+
+
 
 class InterestedCandidatesForm(forms.Form):
     # define field that uses the CheckboxSelectMultiple widget

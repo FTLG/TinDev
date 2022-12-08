@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from ..decorators import recruiter_required
 from django.db import transaction
 from django.db.models import Avg, Count
 from django.forms import inlineformset_factory
@@ -9,10 +10,9 @@ from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView, UpdateView)
 from ..decorators import recruiter_required
-from ..forms import RecruiterSignUpForm, UserPostForm, InterestedCandidatesForm
+from ..forms import RecruiterSignUpForm, UserPostForm, InterestedCandidatesForm, FilterPost
 from ..models import User, UserPost, Offer
 import logging
-
 
 class RecruiterSignUpView(CreateView):
     model = User
@@ -28,10 +28,13 @@ class RecruiterSignUpView(CreateView):
         login(self.request, user)
         return redirect('recruiters:recruiter_home')
 
-
+@login_required
+@recruiter_required
 def recruiter_home(request):
     return render(request, "jobs/recruiters/recruiter_home.html")
 
+@login_required
+@recruiter_required
 def create_post(request):
     form = UserPostForm(request.POST or None)
     user = request.user
@@ -47,13 +50,47 @@ def create_post(request):
 
     return render(request, 'jobs/recruiters/create_post.html', context)
 
+@login_required
+@recruiter_required
 def view_all_posts(request):
 
-    allposts= UserPost.objects.filter(user=request.user).order_by('-date_published')
-    context= {'allposts': allposts}
+    form = FilterPost(request.POST or None)
+    reset_search = False
+    status = None
+    one_interested = False
+
+    if request.GET:
+
+        if 'reset_search' in request.GET and request.GET['reset_search'] == "on":
+            reset_search = True
+
+        if 'status' in request.GET and request.GET['status'] == "inactive":
+            status = "inactive"
+        elif 'status' in request.GET and request.GET['status'] == "active":
+            status = "active"
+
+        if 'at_least_one_interested' in request.GET and request.GET['at_least_one_interested'] == "on":
+            one_interested = True
+
+    allposts = UserPost.objects.filter(user=request.user).order_by('-date_published')
+
+    if status == "inactive":
+        allposts = UserPost.objects.filter(user=request.user).filter(status="Inactive")
+    elif status == "active":
+        allposts = UserPost.objects.filter(user=request.user).filter(status="Active")
+
+    if one_interested:
+        allposts = UserPost.objects.filter(user=request.user).annotate(c=Count('favorites')).filter(c__gt=0)
+
+    if reset_search:
+        allposts = UserPost.objects.filter(user=request.user).order_by('-date_published')
+    
+    context = {'allposts': allposts, 'form':form}
     
     return render(request, 'jobs/recruiters/view_all_posts.html', context)
 
+@login_required
+@recruiter_required
 def post_detail_view(request, url=None):
 
     post= get_object_or_404(UserPost, url=url)
@@ -61,6 +98,8 @@ def post_detail_view(request, url=None):
     
     return render(request, 'jobs/recruiters/post_detail_view.html', context)
 
+@login_required
+@recruiter_required
 def edit_post(request, url):
     post = UserPost.objects.get(url=url)
     form = UserPostForm(request.POST or None, instance=post)
@@ -79,12 +118,16 @@ def edit_post(request, url):
 
     return render(request, 'jobs/recruiters/create_post.html', context)
 
+@login_required
+@recruiter_required
 def delete_post(request, url):
 
     UserPost.objects.filter(url=url).delete()
 
     return redirect('recruiters:view_all_posts')
 
+@login_required
+@recruiter_required
 def view_interested(request, url):
 
     post = UserPost.objects.get(url=url)

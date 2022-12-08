@@ -1,27 +1,17 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
-{% load static %}
 
 {% block content %}
 <html>
     <head>
-        <link rel="stylesheet" href="{% static '/styles.css' %}">
         <meta charset="UTF-8">
         <title>Posts</title>
     </head>
     
     <body>
-        <h1>List of Posts for {{ user.name }} </h1>  
+        <h1>List of Posts with interest for {{ user.name }} </h1>  
         <br>
 
-
-        <form method = "GET">
-            {% for field in form  %}
-                <li>{{ field.label_tag }} {{ field }}</li>&nbsp;&nbsp;
-            {% endfor %}<br><br>
-            <input  type = "submit" value = "Search">
-        </form>
-        <br><br>
         {% for post in allposts %}
 
             <div class="list-group">
