@@ -12,7 +12,7 @@ from ..decorators import candidate_required
 from ..models import User, UserPost, Offer
 import datetime
 
-
+# Create class to sign up candidate
 class CandidateSignUpView(CreateView):
     model = User
     form_class = CandidateSignUpForm
@@ -27,10 +27,14 @@ class CandidateSignUpView(CreateView):
         login(self.request, user)
         return redirect('candidates:candidate_home')
 
+# Function to send website to the candidate home page
+
 @login_required
 @candidate_required
 def candidate_home(request):
     return render(request, "jobs/candidates/candidate_home.html")
+
+#  Function to send website to view all posts page for candidates
 
 @login_required
 @candidate_required
@@ -44,36 +48,44 @@ def view_all_posts_candidates(request):
 
     if request.GET:
 
+        # Calculate status
         if 'status' in request.GET and request.GET['status'] == "inactive":
             status = "inactive"
         elif 'status' in request.GET and request.GET['status'] == "active":
             status = "active"
 
+        # Calculate location
         if 'state' in request.GET:
             state = request.GET["state"]
         if 'city' in request.GET:
             city = request.GET["city"]
 
+        # Calculate keywords
         if 'keywords' in request.GET and request.GET['keywords'] != '':
             keywords = request.GET["keywords"].replace(" ", ",").split(',')
 
-    
+  
+    # Order by date published  
     allposts = UserPost.objects.all().order_by('-date_published')
 
+    # Filter by status
     if status == "inactive":
         allposts = UserPost.objects.filter(status="Inactive")
     elif status == "active":
         allposts = UserPost.objects.filter(status="Active")
 
+    # Filter by state
     if state:
         if city:
             allposts = UserPost.objects.filter(state=state).filter(city=city)
         else:
             allposts = UserPost.objects.filter(state=state)
 
+    # Filter by city
     if city:
         allposts = UserPost.objects.filter(city=city)
 
+    # Filter by keywords
     if keywords != [" "]:
         k = set(keywords)
         temp = []
@@ -95,6 +107,8 @@ def view_all_posts_candidates(request):
     
     return render(request, 'jobs/candidates/view_all_posts_candidates.html', context)
 
+# Function to view posts that the candidate is interested in
+
 @login_required
 @candidate_required
 def view_all_posts_candidates_interest(request):
@@ -105,6 +119,8 @@ def view_all_posts_candidates_interest(request):
     
     return render(request, 'jobs/candidates/view_all_interest_posts_candidates.html', context)
 
+# Function to view detailed view of a post for a candidate
+
 @login_required
 @candidate_required
 def post_detail_view_candidates(request, url=None):
@@ -113,6 +129,8 @@ def post_detail_view_candidates(request, url=None):
     context= {'post': post, 'user':request.user }
     
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
+
+# Function for the candidate to favorite a job posting
 
 @login_required
 @candidate_required
@@ -128,6 +146,8 @@ def favorite_post(request, url):
 
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
 
+# Function to un-favorite a job
+
 @login_required
 @candidate_required
 def remove_favorite(request, url):
@@ -141,6 +161,8 @@ def remove_favorite(request, url):
     context= {'post': post}
 
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
+
+# Function to view job offers for candidate
 
 @login_required
 @candidate_required
@@ -156,6 +178,8 @@ def view_offers(request):
 
     return
 
+# Function to view detailed view of job offer
+
 @login_required
 @candidate_required
 def offer_detail_view(request, url=None):
@@ -166,6 +190,8 @@ def offer_detail_view(request, url=None):
     context= {'post': post, 'user':request.user, 'offer':offer}
 
     return render(request, 'jobs/candidates/offer_detail_view.html', context)
+
+# Function to accept offer
 
 @login_required
 @candidate_required
@@ -188,6 +214,8 @@ def accept_offer(request, url=None):
     context= {'post': post, 'user':user, 'offer':offer}
 
     return render(request, 'jobs/candidates/offer_detail_view.html', context)
+
+# Function to reject offer
 
 @login_required
 @candidate_required
