@@ -176,8 +176,6 @@ def view_offers(request):
     return render(request, 'jobs/candidates/view_all_offers.html', context)
 
 
-    return
-
 # Function to view detailed view of job offer
 
 @login_required
