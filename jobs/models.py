@@ -12,9 +12,13 @@ import datetime
 import uuid
 import string
 
+# Define types of jobs
 POSITION_TYPE = [('Full-Time', 'Full-Time'), ('Part-Time', 'Part-Time'), ('Internship', 'Internship')]
+
+# Define job status
 STATUS = [('Active', 'Active'), ('Inactive', 'Inactive')]
 
+# Create user model
 class User(AbstractUser):
     is_candidate = models.BooleanField(default=False)
     is_recruiter = models.BooleanField(default=False)
@@ -28,6 +32,8 @@ class User(AbstractUser):
     skills = models.CharField(max_length=30, default="STRING")
     accepted = models.BooleanField(default=False)
 
+
+# Create model for User's Jobs
 class UserPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_job')
     title = models.CharField(max_length=500)
@@ -48,22 +54,26 @@ class UserPost(models.Model):
         self.url= slugify(self.id)
         super(UserPost, self).save(*args, **kwargs)
 
+    # Function to sort match the most qualified candidates to the job based on mostly skills, but also bio and job description
     def favorites_ranked(self):
         list_interested = []
         for user in self.favorites.all():
-            
+          
+            # Calculate common words in bios  
             description_simple = self.description.lower().translate(str.maketrans('', '', string.punctuation))
             bio_simple = user.bio.lower().translate(str.maketrans('', '', string.punctuation))
             description_list = description_simple.split(" ")
             bio_list = bio_simple.split(" ")
             num_common_bios = len(list(set(description_list)&set(bio_list)))
 
+            # Calculate common skills
             pref_skills_simple = self.preferred_skills.lower().translate(str.maketrans('', '', string.punctuation))
             user_skills_simple = user.skills.lower().translate(str.maketrans('', '', string.punctuation))
             pref_skills_list = pref_skills_simple.split(" ")
             user_skills_list = user_skills_simple.split(" ")
             num_common_skills = len(list(set(pref_skills_list)&set(user_skills_list)))
 
+            # Weight skills more heavily than bio
             user.compat = int(40 * num_common_bios / len(description_list) + 60 * num_common_skills / len(pref_skills_list))
 
             list_interested.append(user)
@@ -72,6 +82,8 @@ class UserPost(models.Model):
         
         return cands_sorted
 
+
+# Model to make an job offer
 class Offer(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='offer_user')
