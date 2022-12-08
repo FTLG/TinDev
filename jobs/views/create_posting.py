@@ -12,7 +12,7 @@ from ..decorators import recruiter_required
 from ..forms import RecruiterSignUpForm
 from ..models import User
 
-
+# Class to create a job posting
 class CreatePostingView(CreateView):
     model = User
     form_class = create_posting
@@ -27,5 +27,6 @@ class CreatePostingView(CreateView):
         login(self.request, user)
         return redirect('create_posting:create_posting')
 
+# Function to render job posting creation on the screen
 def create_posting(request):
     return render(request, "jobs/create_posting/create_posting.html")

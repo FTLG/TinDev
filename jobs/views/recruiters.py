@@ -14,6 +14,7 @@ from ..forms import RecruiterSignUpForm, UserPostForm, InterestedCandidatesForm,
 from ..models import User, UserPost, Offer
 import logging
 
+# Class to sign up a recruiter
 class RecruiterSignUpView(CreateView):
     model = User
     form_class = RecruiterSignUpForm
@@ -28,10 +29,14 @@ class RecruiterSignUpView(CreateView):
         login(self.request, user)
         return redirect('recruiters:recruiter_home')
 
+# Function to render recruiter home screen
+
 @login_required
 @recruiter_required
 def recruiter_home(request):
     return render(request, "jobs/recruiters/recruiter_home.html")
+
+# Function to create job posting
 
 @login_required
 @recruiter_required
@@ -50,6 +55,8 @@ def create_post(request):
 
     return render(request, 'jobs/recruiters/create_post.html', context)
 
+# Function for recruiter to view the jobs they have posted
+
 @login_required
 @recruiter_required
 def view_all_posts(request):
@@ -64,30 +71,38 @@ def view_all_posts(request):
         if 'reset_search' in request.GET and request.GET['reset_search'] == "on":
             reset_search = True
 
+        # Set status
         if 'status' in request.GET and request.GET['status'] == "inactive":
             status = "inactive"
         elif 'status' in request.GET and request.GET['status'] == "active":
             status = "active"
 
+        # Set whether interested
         if 'at_least_one_interested' in request.GET and request.GET['at_least_one_interested'] == "on":
             one_interested = True
 
+    # Order by date published
     allposts = UserPost.objects.filter(user=request.user).order_by('-date_published')
 
+    # Filter by status
     if status == "inactive":
         allposts = UserPost.objects.filter(user=request.user).filter(status="Inactive")
     elif status == "active":
         allposts = UserPost.objects.filter(user=request.user).filter(status="Active")
 
+    # Filter by whether interested
     if one_interested:
         allposts = UserPost.objects.filter(user=request.user).annotate(c=Count('favorites')).filter(c__gt=0)
 
+    # Reset search if needed
     if reset_search:
         allposts = UserPost.objects.filter(user=request.user).order_by('-date_published')
     
     context = {'allposts': allposts, 'form':form}
     
     return render(request, 'jobs/recruiters/view_all_posts.html', context)
+
+# Function to display detailed view of post as recruiter
 
 @login_required
 @recruiter_required
@@ -97,6 +112,8 @@ def post_detail_view(request, url=None):
     context= {'post': post, 'offered':[]}
     
     return render(request, 'jobs/recruiters/post_detail_view.html', context)
+
+# Function to edit post
 
 @login_required
 @recruiter_required
@@ -125,6 +142,8 @@ def delete_post(request, url):
     UserPost.objects.filter(url=url).delete()
 
     return redirect('recruiters:view_all_posts')
+
+# Function to view candidates that are interested in a post
 
 @login_required
 @recruiter_required
