@@ -6,8 +6,10 @@ from django.conf import settings
 from .views import jobs, candidates, recruiters
 
 urlpatterns = [
+    # Home
     path('', jobs.home, name='home'),
 
+    # All pages for candidate
     path('candidates/', include(([
         path('', candidates.candidate_home, name='candidate_home'),
         path('posts/', candidates.view_all_posts_candidates, name='view_all_posts_candidates'),
@@ -22,6 +24,7 @@ urlpatterns = [
 
     ], 'jobs'), namespace='candidates')),
 
+    # All pages for recruiter
     path('recruiters/', include(([
         path('', recruiters.recruiter_home, name='recruiter_home'),
         path('create/', recruiters.create_post, name='create_post'),
