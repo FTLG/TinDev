@@ -6,13 +6,13 @@ from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
 from django.forms import DateInput, CheckboxInput
 from jobs.models import (User, UserPost)
-
-
+from django.core.validators import RegexValidator
 
 class RecruiterSignUpForm(UserCreationForm):
+
     name = forms.CharField(label='Your Name', max_length=100, required=True)
     company = forms.CharField(label='Your Company', max_length=100, required=True)
-    zipcode = forms.CharField(label='Your Zipcode', max_length=100, required=True)
+    zipcode = forms.CharField(label='Your Zipcode', max_length=5, required=True, validators=[RegexValidator(r"(?<!\d)\d{5}(?!\d)")])
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -28,12 +28,11 @@ class RecruiterSignUpForm(UserCreationForm):
             user.save()
         return user
 
-
 class CandidateSignUpForm(UserCreationForm):
     
     name = forms.CharField(label='Your Name', max_length=100, required=True)
-    zipcode = forms.CharField(label='Your Zipcode', max_length=100, required=True)
-    github = forms.CharField(label='Your Github', max_length=100, required=False)
+    zipcode = forms.CharField(label='Your Zipcode', max_length=5, required=True, validators=[RegexValidator(r"(?<!\d)\d{5}(?!\d)")])
+    github = forms.CharField(label='Your Github', max_length=100, required=False, validators=[RegexValidator(r"(^(http(s?):\/\/)?(www\.)?github\.com\/[^\/])")])
     bio = forms.CharField(label='Your Bio', max_length=100, required=False)
     skills = forms.CharField(label='Your Skills', max_length=100, required=True)
     experience = forms.CharField(label='Your Experience', max_length=100, required=True)

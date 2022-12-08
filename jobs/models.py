@@ -6,6 +6,8 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms import TextInput
+from django.core.validators import RegexValidator
+
 import datetime
 import uuid
 import string
@@ -17,7 +19,7 @@ class User(AbstractUser):
     is_candidate = models.BooleanField(default=False)
     is_recruiter = models.BooleanField(default=False)
     name = models.CharField(max_length=30, default="STRING")
-    zipcode = models.CharField(max_length=30, default="STRING")
+    zipcode = models.IntegerField(max_length=5, validators=[RegexValidator(r'^\d{1,10}$')])
     bio = models.CharField(max_length=30, default="STRING")
     github = models.CharField(max_length=30, default="STRING")
     experience = models.CharField(max_length=30, default="STRING")
@@ -25,8 +27,6 @@ class User(AbstractUser):
     company = models.CharField(max_length=30, default="STRING")
     skills = models.CharField(max_length=30, default="STRING")
     accepted = models.BooleanField(default=False)
-
-    
 
 class UserPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_job')
@@ -43,7 +43,6 @@ class UserPost(models.Model):
     url = models.SlugField(max_length=500, unique=True, blank=True, editable=False)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     favorites = models.ManyToManyField(User, related_name='favorite_job')
-
 
     def save(self, *args, **kwargs):
         self.url= slugify(self.id)
