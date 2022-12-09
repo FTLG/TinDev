@@ -24,24 +24,39 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+Django can be installed easily using pip.
+
+In the command prompt, execute the following command: pip install django. This will download and install Django.
+
+After the installation has completed, you can verify your Django installation by executing django-admin --version in the command prompt.
+
+* Django
   ```sh
-  npm install npm@latest -g
+  pip install django
+  django-admin --version
   ```
+  
+* Python
+  https://www.python.org/downloads/
 
 ### Installation
 
-Describe here the list of steps to get your project running. For example:
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/FTLG/TinDev.git
    ```
-3. Install NPM packages
+2. Install Python and Django packages
    ```sh
-   npm install
+   https://www.python.org/downloads/
+   pip install django
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+4. Run initial migrations from TinDev folder containing manage.py
+   ```sh
+   python manage.py migrate
    ```
+5. Run server
+   ```sh
+   python manage.py runserver <IP>:<PORT>
+   ```
+6. Visit website at ```<IP>:<PORT>``` and you will be redirected to TinDev
