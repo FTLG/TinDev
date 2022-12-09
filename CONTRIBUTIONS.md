@@ -8,6 +8,7 @@ Project contributors (sorted alphabetically)
   * Contributed towards html templates for each of the different views
   * Aided in implementing specific field requirements for different classes
   * Helped with debugging function errors
+  * Worked on creating the project readme and explanations
 
 * **[Maxwell Mullen](https://github.com/maxmullen5)**
 
