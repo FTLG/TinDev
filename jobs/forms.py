@@ -8,6 +8,7 @@ from django.forms import DateInput, CheckboxInput
 from jobs.models import (User, UserPost)
 from django.core.validators import RegexValidator
 
+# Form used to sign up as a recruiter
 class RecruiterSignUpForm(UserCreationForm):
 
     name = forms.CharField(label='Your Name', max_length=100, required=True)
@@ -28,6 +29,7 @@ class RecruiterSignUpForm(UserCreationForm):
             user.save()
         return user
 
+# Form used to sign up as a candidate
 class CandidateSignUpForm(UserCreationForm):
     
     name = forms.CharField(label='Your Name', max_length=100, required=True)
@@ -56,21 +58,17 @@ class CandidateSignUpForm(UserCreationForm):
             user.save()
         return user
 
+# Form used to create a new post
 class UserPostForm(forms.ModelForm):
 
+    # use widget to get input for date
     expire_date = DateField(widget=DateInput(attrs={'type': 'date'}), required=True)
 
     class Meta:
         model = UserPost
         fields= ["title", "job_type", "city", "state", "preferred_skills", "description", "company", "expire_date", "status"]
 
-
-class FavoritePost(forms.ModelForm):
-    class Meta:
-        model = UserPost
-        fields = ['favorites']
-        
-
+# Form used to input postings for recruiter
 class FilterPost(forms.Form):
 
     status = forms.ChoiceField(widget=forms.RadioSelect,
@@ -83,7 +81,7 @@ class FilterPost(forms.Form):
 
         super().__init__(*args, **kwargs)
 
-
+# Form used to input postings for candidate
 class FilterPostCandidate(forms.Form):
 
     status = forms.ChoiceField(widget=forms.RadioSelect,
@@ -103,7 +101,7 @@ class FilterPostCandidate(forms.Form):
         super().__init__(*args, **kwargs)
 
 
-
+# Form used to send offers to candidates
 class InterestedCandidatesForm(forms.Form):
     # define field that uses the CheckboxSelectMultiple widget
     interested_candidates = forms.MultipleChoiceField(

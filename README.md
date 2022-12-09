@@ -10,11 +10,11 @@ The successful implementation should make it easy for any candidate wanting to f
 We want a product whose emphasis is on ease of use, whose navigation is straightforward.
 
 ## Built With
-List here all the dependencies of your project (including version). For example:
+Here are the tools we used to build this project:
 
 * [Python 3.10.5](https://www.python.org/)
 * [Django 3.2.13](https://www.djangoproject.com/)
-
+* [django-bootstrap-v5 1.0.11](https://django-bootstrap-v5.readthedocs.io/en/latest/#)
 
 ## Getting Started
 

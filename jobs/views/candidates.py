@@ -28,14 +28,12 @@ class CandidateSignUpView(CreateView):
         return redirect('candidates:candidate_home')
 
 # Function to send website to the candidate home page
-
-@login_required
+@login_required # decorators ensure proper login 
 @candidate_required
 def candidate_home(request):
     return render(request, "jobs/candidates/candidate_home.html")
 
 #  Function to send website to view all posts page for candidates
-
 @login_required
 @candidate_required
 def view_all_posts_candidates(request):
@@ -108,7 +106,6 @@ def view_all_posts_candidates(request):
     return render(request, 'jobs/candidates/view_all_posts_candidates.html', context)
 
 # Function to view posts that the candidate is interested in
-
 @login_required
 @candidate_required
 def view_all_posts_candidates_interest(request):
@@ -120,7 +117,6 @@ def view_all_posts_candidates_interest(request):
     return render(request, 'jobs/candidates/view_all_interest_posts_candidates.html', context)
 
 # Function to view detailed view of a post for a candidate
-
 @login_required
 @candidate_required
 def post_detail_view_candidates(request, url=None):
@@ -131,7 +127,6 @@ def post_detail_view_candidates(request, url=None):
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
 
 # Function for the candidate to favorite a job posting
-
 @login_required
 @candidate_required
 def favorite_post(request, url):
@@ -147,7 +142,6 @@ def favorite_post(request, url):
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
 
 # Function to un-favorite a job
-
 @login_required
 @candidate_required
 def remove_favorite(request, url):
@@ -163,7 +157,6 @@ def remove_favorite(request, url):
     return render(request, 'jobs/candidates/post_detail_view_candidates.html', context)
 
 # Function to view job offers for candidate
-
 @login_required
 @candidate_required
 def view_offers(request):
@@ -177,7 +170,6 @@ def view_offers(request):
 
 
 # Function to view detailed view of job offer
-
 @login_required
 @candidate_required
 def offer_detail_view(request, url=None):
@@ -190,7 +182,6 @@ def offer_detail_view(request, url=None):
     return render(request, 'jobs/candidates/offer_detail_view.html', context)
 
 # Function to accept offer
-
 @login_required
 @candidate_required
 def accept_offer(request, url=None):
@@ -214,7 +205,6 @@ def accept_offer(request, url=None):
     return render(request, 'jobs/candidates/offer_detail_view.html', context)
 
 # Function to reject offer
-
 @login_required
 @candidate_required
 def reject_offer(request, url=None):

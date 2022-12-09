@@ -20,8 +20,9 @@ Project contributors (sorted alphabetically)
 
 * **[George Perry](https://github.com/george-perry)**
 
-  * ... contribution 1 description ...
-  * ... contribution 2 description ...
+  * Developed the overall functionality of the project
+  * Created sign up & login forms along with core posting/show interest functionality
+  * Designed front end HTML with bootstrap
 
 * **[Duncan Park](https://github.com/duncanjpark)**
 

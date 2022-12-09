@@ -2,7 +2,6 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
 
-
 from .views import jobs, candidates, recruiters
 
 urlpatterns = [
@@ -35,5 +34,4 @@ urlpatterns = [
         path('posts/<slug:url>/interested', recruiters.view_interested, name='view_interested'),
 
     ], 'jobs'), namespace='recruiters')),
-    
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) # enable functionality for static files

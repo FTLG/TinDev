@@ -144,17 +144,19 @@ def delete_post(request, url):
     return redirect('recruiters:view_all_posts')
 
 # Function to view candidates that are interested in a post
-
 @login_required
 @recruiter_required
 def view_interested(request, url):
 
     post = UserPost.objects.get(url=url)
     users = post.favorites_ranked()
+    # save choices as a tuple to pass into the form 
     choices = [(x, (x.name + "  - Compatability Score: " + str(x.compat) +"%")) for x in users]
 
+    # get all current offers
     current_offers = Offer.objects.all()
 
+    # if a user already has an offer for that post, don't include them
     for curr in current_offers:
         for curr_user, string in choices:
             if curr.post == post and curr.user == curr_user:
@@ -163,6 +165,7 @@ def view_interested(request, url):
 
     form = InterestedCandidatesForm(request.POST or None, choices=choices)
 
+    # on form submission, save the offer to db
     if request.method == "POST":
         if form.is_valid():
 

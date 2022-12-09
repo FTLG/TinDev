@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['129.74.152.125']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'jobs',
     'bootstrap5',
-
 ]
 
 MIDDLEWARE = [
@@ -129,12 +127,6 @@ if DEBUG:
     ]
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-
-# STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
-
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, '/static/')]
-
 
 # Custom Django auth settings
 

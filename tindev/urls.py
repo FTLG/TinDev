@@ -4,6 +4,7 @@ from django.conf import settings
 
 from jobs.views import jobs, candidates, recruiters
 
+# List of URL's for landing page, and sign up views
 urlpatterns = [
     path('', include('jobs.urls')),
     path('accounts/', include('django.contrib.auth.urls')),

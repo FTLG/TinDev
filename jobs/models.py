@@ -18,11 +18,15 @@ POSITION_TYPE = [('Full-Time', 'Full-Time'), ('Part-Time', 'Part-Time'), ('Inter
 # Define job status
 STATUS = [('Active', 'Active'), ('Inactive', 'Inactive')]
 
-# Create user model
+# Create user model using AbstractUser for better customization
 class User(AbstractUser):
+
+    # Boolean values used to keep track of user type
     is_candidate = models.BooleanField(default=False)
     is_recruiter = models.BooleanField(default=False)
+
     name = models.CharField(max_length=30, default="STRING")
+    # Zipcode uses regex validator to ensure 5 number input
     zipcode = models.IntegerField(max_length=5, validators=[RegexValidator(r'^\d{1,10}$')])
     bio = models.CharField(max_length=30, default="STRING")
     github = models.CharField(max_length=30, default="STRING")
@@ -35,6 +39,8 @@ class User(AbstractUser):
 
 # Create model for User's Jobs
 class UserPost(models.Model):
+
+    # user is defined with a foreign key to create a relationship with the User model
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_job')
     title = models.CharField(max_length=500)
     job_type = models.CharField(max_length=20, choices=POSITION_TYPE, blank=False)
@@ -47,10 +53,12 @@ class UserPost(models.Model):
     expire_date = models.DateTimeField(default=timezone.now())
     status = models.CharField(max_length = 50, choices=STATUS, blank=False)
     url = models.SlugField(max_length=500, unique=True, blank=True, editable=False)
+    # id uses UUIDField to store universally unique ID's - used as primary key
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     favorites = models.ManyToManyField(User, related_name='favorite_job')
 
     def save(self, *args, **kwargs):
+        # save the url using a slugifed version of the ID
         self.url= slugify(self.id)
         super(UserPost, self).save(*args, **kwargs)
 
@@ -83,9 +91,10 @@ class UserPost(models.Model):
         return cands_sorted
 
 
-# Model to make an job offer
+# Model to make a job offer
 class Offer(models.Model):
 
+    # user and post use foreign keys to create relationships to respective models
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='offer_user')
     post = models.ForeignKey(UserPost, on_delete=models.PROTECT, related_name='offer_post')
     salary = models.CharField(max_length=25)
