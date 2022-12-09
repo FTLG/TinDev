@@ -18,12 +18,9 @@ Here are the tools we used to build this project:
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
 
 Django can be installed easily using pip.
 
@@ -50,6 +47,7 @@ After the installation has completed, you can verify your Django installation by
    ```sh
    https://www.python.org/downloads/
    pip install django
+   pip install -r requirements.txt
    ```
 4. Run initial migrations from TinDev folder containing manage.py
    ```sh
