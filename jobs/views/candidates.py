@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView
-from ..forms import CandidateSignUpForm, FavoritePost, FilterPostCandidate
+from ..forms import CandidateSignUpForm, FilterPostCandidate
 from ..decorators import candidate_required
 from ..models import User, UserPost, Offer
 import datetime
