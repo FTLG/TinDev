@@ -21,5 +21,9 @@ Project contributors (sorted alphabetically)
 
 * **[Duncan Park](https://github.com/duncanjpark)**
 
-  * ... contribution 1 description ...
-  * ... contribution 2 description ...
+  * Implemented the compatability rating for interested candidates.
+  * Implemented the make offer form from the recruiter view.
+  * Contributed to candidate view offer page.
+  * Worked on the accepting offer functionality from the candidate view.
+  * Ensure models.py and forms.py were organized to most effectively aid in their conjuction.
+  * Helped with the functionality of several features in collaboration with groupmates.
